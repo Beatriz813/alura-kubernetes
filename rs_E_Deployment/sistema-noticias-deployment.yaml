@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sistema-noticias-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sistema-noticias-pod
+  # template do pod
+  template:
+    metadata:
+      name: sistema-noticias-pod
+      labels:
+        app: sistema-noticias-pod
+    spec:
+      containers:
+        - image:  aluracursos/sistema-noticias:1
+          name:  sistema-noticias
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name:  sistema-configmap
+          # configura os recursos que esse conteiner vai poder ter
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
